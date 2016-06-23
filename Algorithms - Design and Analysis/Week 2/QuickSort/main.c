@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
 void exchange_member(int *arr, int x, int y) {
     int tmp = arr[x];
     arr[x] = arr[y];
@@ -12,7 +13,7 @@ void exchange_member(int *arr, int x, int y) {
 int partition(int *arr, int lo, int hi) {
     int pivot = arr[hi];
     int i = lo - 1;
-    for (int j = lo; j < hi - 1; j++) {
+    for (int j = lo; j <= hi - 1; j++) {
         if (arr[j] <= pivot) {
             i++;
             exchange_member(arr, i, j);
