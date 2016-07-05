@@ -14,13 +14,14 @@ for line in sys.stdin:
         else:
             my_graph[vertex]=[entry]
 
-def bfs(graph):
+visited = set()
+connected_components = []
+def bfs(graph, entrypoint):
     graph_dist = {}
     for key in graph:
         graph_dist[key] = 2147483647
-    entrypoint = random.choice(list(graph.keys()))
+    # entrypoint = random.choice(list(graph.keys()))
     print("Starting from {}".format(entrypoint))
-    visited = set()
 
     # Setting up entrypoint
     to_visit = [entrypoint]
@@ -41,9 +42,15 @@ def bfs(graph):
 
     return (result, graph_dist)
 
-bfs_result, bfs_dist = bfs(my_graph)
+for key in my_graph.keys():
+    if key not in visited:
+        bfs_result, bfs_dist = bfs(my_graph, key)
 
-print("BFS result: {}".format(bfs_result))
+        connected_components.append(bfs_result)
 
-for x in bfs_result:
-    print("Distance from entrypoint: {}".format(bfs_dist[x]))
+        print("BFS result: {}".format(bfs_result))
+
+        for x in bfs_result:
+            print("Distance from entrypoint: {}".format(bfs_dist[x]))
+
+print("Connected components {}".format(connected_components))
