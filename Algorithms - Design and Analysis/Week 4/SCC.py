@@ -1,5 +1,5 @@
 import sys
-
+import resource
 
 class DirectedGraph(object):
     def __init__(self, vertex_count):
@@ -40,16 +40,20 @@ class SCC(object):
     visited = set()
     running_order_counter = 0
     running_order = {}
+    temp_comp = []
+    scc = []
 
     def __init__(self, graph):
         rev_graph = reversed(graph)
         self.dfs_loop(rev_graph)  # 1st pass
         self.visited = set()
-        print(self.running_order)
+        #print(self.running_order)
+        self.scc=[]
         self.find_scc(graph, self.running_order)  # 2nd pass
+        print(sorted([len(x) for x in self.scc]))
 
     def dfs(self, graph, entrypoint):
-        print(entrypoint)
+        self.temp_comp.append(entrypoint)
         self.visited.add(entrypoint)
         for v in graph.adj(entrypoint):
             if v not in self.visited:
@@ -61,8 +65,8 @@ class SCC(object):
         for x in graph.vertices():
             if x not in self.visited:
                 self.dfs(graph, x)
-            else:
-                print()
+                self.scc.append(self.temp_comp)
+                self.temp_comp = []
 
     def find_scc(self, graph, identifier):
         new_graph = DirectedGraph(graph.vertex_count)
@@ -72,11 +76,15 @@ class SCC(object):
             for connected_vertex in graph.adj(vertex):
                 new_graph.add_edge(identifier[vertex],
                                    identifier[connected_vertex])
-        print(new_graph)
+        # print(new_graph)
         self.dfs_loop(new_graph)
 
 
 def main():
+    sys.setrecursionlimit(10 ** 6)
+    resource.setrlimit(resource.RLIMIT_STACK,
+                       (resource.RLIM_INFINITY, resource.RLIM_INFINITY))
+
     vertex_count = int(sys.argv[1])
     my_graph = DirectedGraph(vertex_count)
 
@@ -88,9 +96,10 @@ def main():
         for entry in input_numbers[1:]:
             my_graph.add_edge(vertex, entry)
 
-    print(my_graph)
+    #print(my_graph)
     SCC(my_graph)
 
 
 if __name__ == "__main__":
     main()
+    # Answer: 434821,968,459,313,211
