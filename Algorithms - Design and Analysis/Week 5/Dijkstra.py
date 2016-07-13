@@ -20,8 +20,7 @@ class WeightedEdge(object):
 
 
 class WeightedDirectedGraph(object):
-    def __init__(self, vertex_count):
-        self.vertex_count = vertex_count
+    def __init__(self):
         self.adjacency = defaultdict(list)
         self._vertices = set()
 
@@ -78,20 +77,23 @@ def dijkstra(graph, entrypoint):
     return (dist_to, path_to)
 
 def main():
-    vertex_count = int(sys.argv[1])
-    entrypoint = sys.argv[2]
-    my_graph = WeightedDirectedGraph(vertex_count)
+    entrypoint = sys.argv[1]
+    my_graph = WeightedDirectedGraph()
     for line in sys.stdin:
-        tokens = line.strip().split()
+        tokens = line.strip().split('\t')
         origin = tokens[0]
-        destination = tokens[1]
-        weight = int(tokens[2])
-        assert weight>=0
-        my_graph.add_edge(WeightedEdge(origin, destination, weight))
+        for edge in tokens[1:]:
+            destination = edge.split(',')[0]
+            weight = int(edge.split(',')[1])
+            assert weight>=0
+            my_graph.add_edge(WeightedEdge(origin, destination, weight))
     dist_to, path_to = dijkstra(my_graph, entrypoint)
     print("Distance To:\n{}".format(dist_to))
     print("Path To:\n{}".format(path_to))
+    for entry in ['7','37','59','82','99','115','133','165','188','197']:
+        print(dist_to[entry])
 
+    # Answer: 2599,2610,2947,2052,2367,2399,2029,2442,2505,3068
 
 if __name__ == '__main__':
     main()
