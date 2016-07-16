@@ -114,7 +114,7 @@ class BinarySearchTree(object):
         if node_to_delete.left and (not node_to_delete.right):
             node_to_delete = node_to_delete.left
             return
-        # Difficult case, two child
+        # Difficult case, two children
         predecessor = self.predecessor(key)
         predecessor.key, node_to_delete.key = node_to_delete.key, predecessor.key
         node_to_delete = predecessor
