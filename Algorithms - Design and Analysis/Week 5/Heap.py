@@ -44,20 +44,24 @@ class MaxHeap(object):
             j = 2 * k  # left child
             if j < self.idx and self.cmp(j, j + 1):  # Right child is better
                 j += 1
-            if self.cmp(k, j):
+            if not self.cmp(k, j):
                 break  # Restored heap property
             self.exchange(k, j)
             k = j # New position
 
 
 def main():
-    pq = MaxHeap([4, 1, 3, 5])
-    assert pq.extract_max() == 5
-    assert len(pq) == 3
-    pq.insert(7)
-    pq.insert(2)
-    assert len(pq) == 5
-    assert pq.extract_max() == 7
+    pq = MaxHeap(list("SORTEXAMPLE"))
+    assert pq.extract_max() == 'X'
+    assert len(pq) == 10
+    pq.insert('Y')
+    pq.insert('Z')
+    assert len(pq) == 12
+    assert pq.extract_max() == 'Z'
+    assert pq.extract_max() == 'Y'
+    assert pq.extract_max() == 'T'
+    assert pq.extract_max() == 'S'
+    assert pq.extract_max() == 'R'
     print("All tests passed.")
 
 
