@@ -1,6 +1,7 @@
 import System.Process (readProcess)
 import System.IO (getLine, putStrLn)
 import Data.Char (ord, isAscii)
+import Debug.Trace (trace)
 
 charsetSize = 128
 
@@ -14,10 +15,10 @@ updateHash oldHash oldLeadingChar newTrailingChar largePrime rm =
     let hashAfterLeadingRemoved = (oldHash+largePrime-rm*(ord oldLeadingChar) `rem` largePrime) `rem` largePrime
     in (hashAfterLeadingRemoved*charsetSize + ord newTrailingChar) `rem` largePrime
 
-
+--subStringSearch patternLength initPatternHash text@(x:xs) initTextHash largePrime rm | trace ("subStringSearch " ++ show initPatternHash ++ " " ++ show initTextHash ++" "++ text) False = undefined
 subStringSearch patternLength initPatternHash text@(x:xs) initTextHash largePrime rm
-    | patternLength > length text = False -- Text should be no shorter than pattern
     | initTextHash==initPatternHash = True
+    | patternLength >= length text = False -- Text should be no shorter than pattern
     | otherwise = let updatedTextHash = updateHash initTextHash x (text!!patternLength) largePrime rm
                   in subStringSearch patternLength initPatternHash xs updatedTextHash largePrime rm
 
@@ -26,7 +27,7 @@ powRem a 0 divider = 1
 powRem a x divider = (a*(powRem a (x-1) divider)) `rem` divider
 
 main = do
-    largePrime <- fmap read (readProcess "openssl" ["prime", "-generate", "-bits", "30"] "") :: IO Int
+    largePrime <- fmap read (readProcess "openssl" ["prime", "-generate", "-bits", "12"] "") :: IO Int
     pattern <- getLine
     text <- getLine
     let rm = powRem charsetSize (length pattern -1) largePrime
