@@ -1,31 +1,30 @@
 public class Solution {
 
-    int[][] mem;
-
-    public int calc(int[] nums, int i, int j) {
-
-        if (i > j) {
-            return 0;
-        }
-        if (i == j) {
-            return nums[i];
-        }
-        if (this.mem[i][j] != Integer.MIN_VALUE) {
-            return this.mem[i][j];
-        }
-        int temp = Math.max(nums[i] + calc(nums, i + 2, j), calc(nums, i + 1, j));
-        mem[i][j] = temp;
-        return temp;
-    }
+    int[][] m;
 
     public int rob(int[] nums) {
+        if (nums.length==0){
+            return 0;
+        }
         int size = nums.length;
-        this.mem = new int[size][size];
+        this.m = new int[size][size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                this.mem[i][j] = Integer.MIN_VALUE;
+                if (i == j) {
+                    this.m[i][j] = nums[i];
+                } else {
+                    this.m[i][j] = Integer.MIN_VALUE;
+                }
             }
         }
-        return calc(nums, 0, nums.length - 1);
+        for (int i = 0; i < size-1; i++) {
+            m[i][i + 1] = Math.max(nums[i],nums[i+1]);
+        }
+        for (int interval = 2; interval < size; interval++) {
+            for (int i = 0; i < size-interval; i++) {
+                m[i][i + interval] = Math.max(nums[i + interval] + m[i][i + interval - 2], m[i][i + interval - 1]);
+            }
+        }
+        return m[0][size-1];
     }
 }
