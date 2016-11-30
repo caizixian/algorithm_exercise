@@ -1,17 +1,19 @@
 public class Solution {
-    public int bits(int i) {
-        int sum = 0;
-        while (i > 0) {
-            sum += i & 1;
-            i = i >> 1;
-        }
-        return sum;
-    }
-
     public int[] countBits(int num) {
         int[] result = new int[num + 1];
-        for (int i = 0; i <= num; i++) {
-            result[i] = bits(i);
+        // Trivial case
+        result[0] = 0;
+        result[1] = 1;
+        int upper = (int) Math.floor(Math.log(num) / Math.log(2)) + 1;
+        for (int pow = 1; pow <= upper; pow++) {
+            int start = (int) Math.pow(2, pow);
+            int end = (int) (Math.pow(2, pow + 1) - 1);
+            for (int i = start; i <= end; i++) {
+                if (i > num) {
+                    break;
+                }
+                result[i] = result[i - start] + 1;
+            }
         }
         return result;
     }
