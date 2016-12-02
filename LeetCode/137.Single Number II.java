@@ -1,12 +1,11 @@
 public class Solution {
-    public int singleNumber(int[] A) {
-        int one = 0, two = 0;
-        for (int i = 0; i < A.length; i++) {
-            int one_ = (one ^ A[i]) & ~two;
-            int two_ = A[i] & one | ~A[i] & two;
-            one = one_;
-            two = two_;
+    public int singleNumber(int[] nums) {
+        int ones = 0, twos = 0;
+        for(int i = 0; i < nums.length; i++){
+            ones = (ones ^ nums[i]) & ~twos; // XOR of numbers appear once
+            twos = (twos ^ nums[i]) & ~ones; // XOR of numbers appear twice
+            // Third time a number appears, it will be removed from ones and twos
         }
-        return one;
+        return ones;
     }
 }
