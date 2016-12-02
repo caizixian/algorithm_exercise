@@ -1,18 +1,26 @@
-import java.util.Arrays;
-import java.util.HashMap;
-
 public class Solution {
     public int[] singleNumber(int[] nums) {
-        HashMap<Integer, Integer> count = new HashMap<>();
+        int sum = 0;
         for (int i : nums) {
-            count.merge(i, 1, (v, one) -> v + one);
+            sum = sum ^ i;
         }
+        // sum=b^c
+        int diff_bit;
+        for (diff_bit = 0; diff_bit <= 32; diff_bit++) {
+            if ((sum & 1) == 1) {
+                break;
+            } else {
+                sum = sum >> 1;
+            }
+        }
+        // diff_bit th bits of b and c are different
+        int comp = 1 << diff_bit;
         int[] result = new int[2];
-        int i = 0;
-        for (HashMap.Entry<Integer, Integer> e : count.entrySet()) {
-            if (e.getValue() == 1) {
-                result[i] = e.getKey();
-                i++;
+        for (int i : nums) {
+            if ((i & comp) > 0) {
+                result[0] = result[0] ^ i;
+            } else {
+                result[1] = result[1] ^ i;
             }
         }
         return result;
