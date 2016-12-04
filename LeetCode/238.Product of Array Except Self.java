@@ -4,26 +4,19 @@ public class Solution {
             return nums;
         }
         int[] result = new int[nums.length];
-        if (nums.length == 1) {
-            result[0] = 0;
-            return result;
-        }
+        // i 0~len exclusive
+        // result[i] = pi(0~i)*pi(i+1~len) (exclusive)
+        // compute pi(0~i) (exclusive first)
         result[0] = 1;
         for (int i = 1; i < nums.length; i++) {
-            result[0] *= nums[i];
+            result[i] = result[i - 1] * nums[i - 1];
         }
 
-        for (int i = 1; i < result.length; i++) {
-            if (nums[i] == 0) {
-                result[i] = 1;
-                for (int j = 0; j < nums.length; j++) {
-                    if (j != i) {
-                        result[i] *= nums[j];
-                    }
-                }
-            } else {
-                result[i] = result[i - 1] / nums[i] * nums[i - 1];
-            }
+        int accumulator = nums[nums.length - 1]; // Store pi(i+1~len)
+        for (int i = nums.length - 2; i >= 0; i--) {
+            // result[i] = pi (0~i)
+            result[i] *= accumulator;
+            accumulator *= nums[i];
         }
         return result;
     }
