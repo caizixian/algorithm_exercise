@@ -1,30 +1,35 @@
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.PriorityQueue;
-
 public class Solution {
-    public int kthSmallest(int[][] matrix, int k) {
-        PriorityQueue<Integer> max_heap = new PriorityQueue<>(Collections.reverseOrder());
-        for (int[] row : matrix) {
-            for (int i = 0; i < row.length; i++) {
-                if (max_heap.size() < k) {
-                    max_heap.add(row[i]);
-                } else {
-                    // use 0~i-1 to fill the heap
-                    int idx = Arrays.binarySearch(row, i, row.length, max_heap.peek());
-                    if (idx < 0) {
-                        idx = -(idx + 1); // insertion point
-                    }
-                    for (int j = i; j < idx; j++) {
-                        max_heap.add(row[j]);
-                        if (max_heap.size() > k) {
-                            max_heap.poll();
-                        }
-                    }
-                    break;
-                }
+    private int bisect_right(int[] a, int key) {
+        int lo = 0;
+        int hi = a.length - 1;
+        while (lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (a[mid] <= key) {
+                lo = mid + 1;
+            } else {
+                hi = mid - 1;
             }
         }
-        return max_heap.peek();
+        return lo;
+    }
+
+    public int kthSmallest(int[][] matrix, int k) {
+        int len = matrix.length;
+        int lo = matrix[0][0];
+        int hi = matrix[len - 1][len - 1];
+        while (lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
+            // Calculate the rank of mid
+            int rank = 0;
+            for (int[] row : matrix) {
+                rank += bisect_right(row, mid);
+            }
+            if (rank >= k) {
+                hi = mid - 1;
+            } else {
+                lo = mid + 1;
+            }
+        }
+        return lo;
     }
 }
