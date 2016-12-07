@@ -3,23 +3,23 @@ import java.util.HashMap;
 public class Solution {
 
     public int romanToInt(String s) {
-        HashMap<Character, Integer> romamLiteral = new HashMap<>();
-        romamLiteral.put('I', 1);
-        romamLiteral.put('V', 5);
-        romamLiteral.put('X', 10);
-        romamLiteral.put('L', 50);
-        romamLiteral.put('C', 100);
-        romamLiteral.put('D', 500);
-        romamLiteral.put('M', 1000);
+        HashMap<Character, Integer> romanLiteral = new HashMap<>();
+        romanLiteral.put('I', 1);
+        romanLiteral.put('V', 5);
+        romanLiteral.put('X', 10);
+        romanLiteral.put('L', 50);
+        romanLiteral.put('C', 100);
+        romanLiteral.put('D', 500);
+        romanLiteral.put('M', 1000);
         int sum = 0;
         for (int i = 0; i < s.length(); i++) {
-            int current = romamLiteral.get(s.charAt(i));
+            int current = romanLiteral.get(s.charAt(i));
             if (i == s.length() - 1) {
                 // Tail
                 sum += current;
             } else {
                 // Not tail
-                int next = romamLiteral.get(s.charAt(i + 1));
+                int next = romanLiteral.get(s.charAt(i + 1));
                 if (current < next) {
                     sum -= current;
                 } else {
