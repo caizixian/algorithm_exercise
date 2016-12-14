@@ -43,10 +43,6 @@ class Pair {
     public int hashCode() {
         return x.hashCode() * 31 + y.hashCode();
     }
-
-    public String toString() {
-        return x + " " + y + " " + idx1 + " " + idx2;
-    }
 }
 
 public class Solution {
@@ -55,7 +51,13 @@ public class Solution {
         List<List<Integer>> result = new LinkedList<>();
         HashMap<Integer, HashSet<Pair>> sum = new HashMap<>();
         for (int i = 0; i < nums.length - 1; i++) {
+            if (i != 0 && nums[i - 1] == nums[i]) {
+                continue;
+            }
             for (int j = i + 1; j < nums.length; j++) {
+                if (j != i + 1 && nums[j - 1] == nums[j]) {
+                    continue;
+                }
                 sum.putIfAbsent(nums[i] + nums[j], new HashSet<>());
                 sum.get(nums[i] + nums[j]).add(new Pair(nums[i], nums[j], i, j));
             }
