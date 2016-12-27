@@ -10,7 +10,7 @@ public class Solution {
             this.y = y;
         }
 
-        Point substract(Point other) {
+        Point subtract(Point other) {
             return new Point(this.x - other.x, this.y - other.y);
         }
 
@@ -22,10 +22,6 @@ public class Solution {
             return new Point((this.x + other.x) / 2, (this.y + other.y) / 2);
         }
 
-        Point reverse() {
-            return new Point(-this.x, -this.y);
-        }
-
         public String toString() {
             return (int) this.x + " " + (int) this.y;
         }
@@ -33,7 +29,7 @@ public class Solution {
 
     public static Point oppositePoint(Point diagonalA, Point diagonalB, Point c) {
         Point middle = diagonalA.middle(diagonalB);
-        return middle.addition(middle.substract(c));
+        return middle.addition(middle.subtract(c));
     }
 
     public static void main(String[] args) {
